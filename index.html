@@ -241,8 +241,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/02/Runtime-API/" itemprop="url">
-                  Runtime-API
+                <a class="post-title-link" href="/2016/11/04/Hello World/" itemprop="url">
+                  个人简介
                 </a>
               
             
@@ -255,8 +255,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-02T11:24:47+08:00" content="2016-11-02">
-              2016-11-02
+            <time itemprop="dateCreated" datetime="2016-11-04T00:00:00+08:00" content="2016-11-04">
+              2016-11-04
             </time>
           </span>
 
@@ -285,76 +285,7 @@
       
         
           
-            <p>#runtime详解</p>
-<blockquote>
-<p>官方文档并配合代码详解runtime方法的作用</p>
-</blockquote>
-<p>###方法</p>
-<blockquote>
-<p>runtime方法分为多种,将一一进行详解</p>
-</blockquote>
-<p>####Working with Classes(使用类)</p>
-<ol>
-<li><p>class_getName</p>
-<blockquote>
-<p>Returns the name of a class.(返回类名)</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	-(<span class="keyword">void</span>)getClassName&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *className = class_getName([People <span class="keyword">class</span>]);</div><div class="line">    </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%s"</span>,className);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>class_getSuperclass(获取父类)</p>
-<blockquote>
-<p>Returns the superclass of a class.(返回父类名称)</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	-(<span class="keyword">void</span>)getSuperClass&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">id</span> superClass = class_getSuperclass([Man <span class="keyword">class</span>]);</div><div class="line">    </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[superClass <span class="keyword">class</span>]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>class_setSuperclass(重新给一个类设置父类,<em>已过时</em>)</p>
-<blockquote>
-<p>Sets the superclass of a given class.</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">	-(<span class="keyword">void</span>)setNewSuperClass&#123;</div><div class="line">    <span class="comment">//此处Man的父类为People</span></div><div class="line">    class_setSuperclass([Man <span class="keyword">class</span>],[<span class="built_in">NSObject</span> <span class="keyword">class</span>]);</div><div class="line">    </div><div class="line">    <span class="keyword">id</span> superClass = class_getSuperclass([Man <span class="keyword">class</span>]);</div><div class="line">    <span class="comment">//输出结果:NSObject</span></div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[superClass <span class="keyword">class</span>]);   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>class_isMetaClass</p>
-<blockquote>
-<p>Returns a Boolean value that indicates whether a class object is a metaclass.(返回一个对象是否为元类(什么是元类,<a href="http://www.jianshu.com/p/8036f15c91c6#" target="_blank" rel="external">参考</a>))</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//输出结果全部为NO</span></div><div class="line">  <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>,class_isMetaClass([People <span class="keyword">class</span>]));</div><div class="line">  <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>,class_isMetaClass([<span class="built_in">NSObject</span> <span class="keyword">class</span>]));</div></pre></td></tr></table></figure>
-<ul>
-<li>每一个类里面都有一个isa指针,指向它的元类,每个类的元类都是独一无二而.</li>
-<li>元类里面存储了一个类的类方法,当调用一个类方法的时候,会在该类的metaClass里的methodList进行寻找.</li>
-<li>每一个 Meta Class 的 isa 指针都指向最上层的 Meta Class，即 NSObject 的 MetaClass，而最上层的 MetaClass 的 isa 指针又指向自己(参考了上方链接)</li>
-</ul>
-</li>
-<li><p>class_getInstanceSize</p>
-<blockquote>
-<p>Returns the size of instances of a class.(返回一个类的实例大小)</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	-(<span class="keyword">void</span>)sizeOfInstanceOfClass&#123;</div><div class="line">    size_t howBig = class_getInstanceSize([<span class="built_in">NSObject</span> <span class="keyword">class</span>]);</div><div class="line">    <span class="comment">//输出为8字节</span></div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%zu"</span>,howBig);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>class_getInstanceVariable</p>
-<blockquote>
-<p>参数: 类,类的实例变量名称,以下划线开头</p>
-<p>返回值:Returns the Ivar for a specified instance variable of a given class.(变量信息的16进制内存地址)</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	-(<span class="keyword">void</span>)addressOfPreproty&#123;</div><div class="line">    Ivar ivar = class_getInstanceVariable([People <span class="keyword">class</span>], <span class="string">"_age"</span>);</div><div class="line">	<span class="comment">//0x10d4d23e0</span></div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%p"</span>,ivar);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>class_getClassVariable</p>
-<blockquote>
-<p>参数:类名</p>
-<p>返回值:Returns the Ivar for a specified class variable of a given class.</p>
-</blockquote>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)addressOfClass&#123;</div><div class="line"> 	  Ivar ivar = class_getClassVariable([People <span class="keyword">class</span>], <span class="string">"_age"</span>);</div><div class="line">	<span class="comment">//0x0</span></div><div class="line">  	 <span class="built_in">NSLog</span>(<span class="string">@"%p"</span>,ivar);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>未清楚其含义,stackflow上找到如下解释:class_getClassVariable(cls, name) merely calls class_getInstanceVariable(cls-&gt;isa, name).,中文意思就是:class_getClassVariable只调用class_getInstanceVariable。</p>
-</blockquote>
-</li>
-</ol>
-<ol>
-<li>class_addIvar(添加实例变量)<blockquote>
-<p>此功能只能objc_allocateClassPair后objc_registerClassPair之前被调用。添加一个实例变量，以现有的类不被支持。</p>
-</blockquote>
-</li>
-</ol>
-
+            <p align="right">—-无人问与我立黄昏,无人问我粥可温暖.</p>
           
         
       
@@ -415,7 +346,7 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="https://cloud.githubusercontent.com/assets/22740071/19960720/786865b4-a1e9-11e6-9e20-1913594d22ed.png"
+               src="http://og3y95lgu.bkt.clouddn.com/avtar.png"
                alt="任祥龙" />
           <p class="site-author-name" itemprop="name">任祥龙</p>
           <p class="site-description motion-element" itemprop="description">Alibaba,wait me</p>
@@ -430,13 +361,6 @@
 
           
 
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
         </nav>
